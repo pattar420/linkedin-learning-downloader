@@ -2,6 +2,7 @@
 import requests
 from requests import Session
 from bs4 import BeautifulSoup
+from progress.bar import Bar #Code from Georgios Verigakis at https://github.com/verigak
 import urllib
 import sys
 import re
@@ -65,7 +66,10 @@ class Lld:
         return '%d:%02d:%02d,%02d' % (hours, minitues, seconds, milliseconds)
 
     def download_file(self, url, path, file_name):
+        
         resp = self.session.get(url, stream=True)
+        counter = int(resp.headers['Content-Length'])/1024
+        pb = Bar('Current File: ', max=counter)
         if not os.path.exists(path):
             os.makedirs(path)
         try:
@@ -73,6 +77,8 @@ class Lld:
                 for chunk in resp.iter_content(chunk_size=1024):
                     if chunk:
                         f.write(chunk)
+                        pb.next()
+            pb.finish()
         except Exception as e:
             os.remove(path + '/' + file_name)
             print(e)
