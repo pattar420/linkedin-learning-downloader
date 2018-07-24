@@ -60,9 +60,9 @@ class Lld:
     @staticmethod
     def format_time(ms):
         seconds, milliseconds = divmod(ms, 1000)
-        minitues, seconds = divmod(seconds, 60)
-        hours, minitues = divmod(minitues, 60)
-        return '%d:%02d:%02d,%02d' % (hours, minitues, seconds, milliseconds)
+        minutes, seconds = divmod(seconds, 60)
+        hours, minutes = divmod(minutes, 60)
+        return '%d:%02d:%02d,%02d' % (hours, minutes, seconds, milliseconds)
 
     def download_file(self, url, path, file_name):
         resp = self.session.get(url, stream=True)
